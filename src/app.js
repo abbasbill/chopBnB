@@ -15,12 +15,16 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { db } = require('./models');
 
+const { adminService } = require('./services');
+
 const app = express();
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+app.use(express.static('public'));
 
 // set security HTTP headers
 app.use(helmet());
@@ -66,6 +70,9 @@ app.use(errorConverter);
 app.use(errorHandler);
 
 // intit DB
-db.sequelize.sync();
+db.sequelize.sync({ force: true }).then(async () => {
+  await adminService.createAdminUsers();
+});
+// db.sequelize.sync({ force: true });
 
 module.exports = app;

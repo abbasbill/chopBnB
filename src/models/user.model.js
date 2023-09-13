@@ -2,6 +2,11 @@ const validator = require('validator');
 
 module.exports = (sequelize, dataType) => {
   const user = sequelize.define('user', {
+    // userName: {
+    //   type: dataType.STRING,
+    //   allowNull: false,
+    //   trim: true,
+    // },
     firstName: {
       type: dataType.STRING,
       allowNull: false,
@@ -23,6 +28,14 @@ module.exports = (sequelize, dataType) => {
           throw new Error('Invalid email');
         }
       },
+    },
+    contact: {
+      type: dataType.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: dataType.ENUM('user', 'admin'),
+      defaultValue: 'user',
     },
     password: {
       type: dataType.STRING,

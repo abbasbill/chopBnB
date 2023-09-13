@@ -73,10 +73,21 @@ const generateAuthTokens = async (user) => {
   const refreshToken = generateToken(user, refreshTokenExpires, tokenTypes.REFRESH);
   await saveToken(refreshToken, user, refreshTokenExpires, tokenTypes.REFRESH);
 
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit', // Add hours in 12-hour format
+    minute: '2-digit', // Add minutes
+    second: '2-digit', // Add seconds
+    hour12: true, // Use 12-hour clock (true) or 24-hour clock (false)
+  };
+
   return {
     access: {
       token: accessToken,
-      expires: accessTokenExpires.toDate(),
+      expires: accessTokenExpires.toDate().toLocaleDateString('en-US', options),
     },
     refresh: {
       token: refreshToken,

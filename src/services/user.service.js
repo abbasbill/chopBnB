@@ -26,6 +26,30 @@ const isPasswordMatch = async function (password, user) {
   return comp;
 };
 
+// const adminUser = [
+//   {
+//     firstName: 'admin1',
+//     lastName: 'admin1',
+//     email: 'admin1@gmail.com',
+//     contact: '08012305678',
+//     password: bcrypt.hashSync('admin1234', 8),
+//     role: 'admin',
+//   },
+//   {
+//     firstName: 'admin2',
+//     lastName: 'admin2',
+//     email: 'admin2@gmail.com',
+//     contact: '08012345698',
+//     password: bcrypt.hashSync('admin1234', 8),
+//     role: 'admin',
+//   },
+// ];
+
+// const createAdminUsers = async () => {
+//   const users = await db.users.bulkCreate(adminUser);
+//   return users;
+// };
+
 /**
  * Create a user
  * @param {Object} userBody
@@ -42,7 +66,6 @@ const createUser = async (userBody) => {
 
 /**
  * Query for users
- * @param {Object} filter - Mongo filter
  * @param {Object} options - Query options
  * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
  * @param {number} [options.limit] - Maximum number of results per page (default = 10)
@@ -50,7 +73,7 @@ const createUser = async (userBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const users = await db.users.paginate(filter, options);
+  const users = await db.users.findAll(filter, options);
   return users;
 };
 
@@ -60,7 +83,7 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  return db.users.findById(id);
+  return db.users.findOne({ id });
 };
 
 /**
@@ -106,6 +129,7 @@ const deleteUserById = async (userId) => {
 };
 
 module.exports = {
+  // createAdminUsers,
   createUser,
   queryUsers,
   getUserById,
